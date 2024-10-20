@@ -116,7 +116,11 @@ const TodoList = ({ todoList }: TodoListProps) => {
     return (
         <div className="todo">
             <div className="todo__header">
-                <input type="text" className="todo__header--input-title" onKeyDown={addTodoItem}></input>
+                <input type="text" 
+                    placeholder="What needs to be done ?"
+                    className="todo__header--input-title" 
+                    onKeyDown={addTodoItem}
+                ></input>
                 <label className="todo__header--complete-action">
                     <input className="todo__header--complete-checkbox d-none" type="checkbox" onChange={completeAllTodo}></input>
                     <div className="todo__header--complete-text">Complete</div>
