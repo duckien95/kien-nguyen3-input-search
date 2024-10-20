@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import TodoItem from "./todo-item";
 import { TodoStatus } from "../../utils/variables/todo-status";
 import { TodoData } from "./inteface/interface-todo-item";
+import { useTodoListStore } from "../../context/todo-list/todo-list-store";
 
 export interface TodoListProps {
     todoList: Array<TodoData>;
@@ -14,21 +15,33 @@ const TodoList = ({ todoList }: TodoListProps) => {
 
     const [displayType, setDisplayType] = useState(TodoStatus.All);
     const [listCurrentTodo, setListCurrentTodo] = useState<TodoData[]>(todoList);
+    // get state from todo list store
+    const setEditedTodoId = useTodoListStore((state) => state.setEditedTodoId);
 
-    const getListDisplayTodo = () => {        
-        return listCurrentTodo.filter(item => displayType == TodoStatus.All ||  item.type == displayType);
-    }
+    const getListDisplayTodo = () => {           
+        return listCurrentTodo.filter(item => {
+            return  displayType == TodoStatus.All 
+                || (displayType == TodoStatus.Active && item.type == displayType && !item.isCompleted)
+                || (displayType == TodoStatus.Complete && item.isCompleted);   
+            }
+        )
+    };
 
     const updateTodoList = (listTodo: TodoData[]) => {
         setListCurrentTodo(prevListTodo => [...JSON.parse(JSON.stringify(listTodo))]);
     }
 
     const clearAllCompleted = () => {
-        setListCurrentTodo(prevState => prevState.filter(item => item.type != TodoStatus.Complete));
+        setListCurrentTodo(prevState => prevState.filter(item => {    
+            return !item.isCompleted;
+        }));
     }
 
-    const completeAllTodo = () => {
-
+    const completeAllTodo = (evt : React.ChangeEvent<HTMLInputElement>) => {
+        const listCompleted = listCurrentTodo.filter(item => item.isCompleted);
+        const flagComplete = !(listCompleted.length == listCurrentTodo.length);
+        listCurrentTodo.map(item => item.isCompleted = flagComplete);
+        updateTodoList(listCurrentTodo);
     }
 
     const addTodoItem = (evt: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,7 +52,8 @@ const TodoList = ({ todoList }: TodoListProps) => {
             const newTodo = {
                 type: TodoStatus.Active,
                 title: todoName.trim(),
-                id: new Date().getTime().toString()
+                id: new Date().getTime().toString(),
+                isCompleted: false
             };
             setListCurrentTodo(prev => [...prev, newTodo]);
             // reset input value
@@ -51,7 +65,9 @@ const TodoList = ({ todoList }: TodoListProps) => {
         let index = listCurrentTodo.findIndex(item => {return item.id == todoId});
         if(index > -1) {
             // update new status for todo item
+            const item =listCurrentTodo[index];
             listCurrentTodo[index].type = evt.target.checked ? TodoStatus.Complete : TodoStatus.Active;
+            listCurrentTodo[index].isCompleted = evt.target.checked;
             updateTodoList(listCurrentTodo);
         }
     }
@@ -63,6 +79,7 @@ const TodoList = ({ todoList }: TodoListProps) => {
             // update new title for todo item after user press on enter button
             listCurrentTodo[index].title = newTitle;
             updateTodoList(listCurrentTodo);
+            setEditedTodoId("");
         }
     }
 
@@ -99,7 +116,11 @@ const TodoList = ({ todoList }: TodoListProps) => {
     return (
         <div className="todo">
             <div className="todo__header">
-                <input type="text" onKeyDown={addTodoItem}></input>
+                <input type="text" className="todo__header--input-title" onKeyDown={addTodoItem}></input>
+                <label className="todo__header--complete-action">
+                    <input className="todo__header--complete-checkbox d-none" type="checkbox" onChange={completeAllTodo}></input>
+                    <div className="todo__header--complete-text">Complete</div>
+                </label>
             </div>
             <div className="todo__body">
                 <ul className="todo__list">
