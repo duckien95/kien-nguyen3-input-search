@@ -1,8 +1,7 @@
-import { useState } from "react";
 import TodoItem from "./todo-item";
 import { TodoStatus } from "../../utils/variables/todo-status";
 import { TodoData } from "./inteface/interface-todo-item";
-import { useTodoListStore } from "../../context/todo-list/todo-list-store";
+import { useTodoService } from "../../services/todo-list/useTodo";
 
 export interface TodoListProps {
     todoList: Array<TodoData>;
@@ -10,86 +9,21 @@ export interface TodoListProps {
     pageTitle?: string;
 }
 
-const TodoList = ({ todoList, placeholder, pageTitle = "Todos" }: TodoListProps) => {
+const TodoList: React.FC<TodoListProps> = ({ placeholder, pageTitle = "Todos" }) => {
     console.log('TodoList re-render')
 
-    const [displayType, setDisplayType] = useState(TodoStatus.All);
-    const [listCurrentTodo, setListCurrentTodo] = useState<TodoData[]>(todoList);
-    // get state from todo list store
-    const setEditedTodoId = useTodoListStore((state: any) => state.setEditedTodoId);
-
-    const getListDisplayTodo = () => {           
-        return listCurrentTodo.filter(item => {
-            return  displayType == TodoStatus.All 
-                || (displayType == TodoStatus.Active && item.type == displayType && !item.isCompleted)
-                || (displayType == TodoStatus.Complete && item.isCompleted);   
-            }
-        )
-    };
-
-    const updateTodoList = (listTodo: TodoData[]) => {
-        setListCurrentTodo([...JSON.parse(JSON.stringify(listTodo))]);
-    }
-
-    const clearAllCompleted = () => {
-        setListCurrentTodo(prevState => prevState.filter(item => {    
-            return !item.isCompleted;
-        }));
-    }
-
-    const completeAllTodo = () => {
-        const listCompleted = listCurrentTodo.filter(item => item.isCompleted);
-        const flagComplete = listCompleted.length != listCurrentTodo.length;
-        listCurrentTodo.forEach(item => item.isCompleted = flagComplete);
-        updateTodoList(listCurrentTodo);
-    }
-
-    const addTodoItem = (evt: React.KeyboardEvent<HTMLInputElement>) => {
-        const targetEl = evt.target as HTMLInputElement;
-        const todoName = targetEl.value;
-        if(evt.key === 'Enter' && todoName.trim()) {
-            // add new todo to list after user press on enter button
-            const newTodo = {
-                type: TodoStatus.Active,
-                title: todoName.trim(),
-                id: new Date().getTime().toString(),
-                isCompleted: false
-            };
-            setListCurrentTodo(prev => [...prev, newTodo]);
-            // reset input value
-            targetEl.value = "";
-        }
-    }
-
-    const onCompleteItem = (evt: React.ChangeEvent<HTMLInputElement>, todoId: string) => {
-        let index = listCurrentTodo.findIndex(item => {return item.id == todoId});
-        if(index > -1) {
-            // update new status for todo item
-            listCurrentTodo[index].type = evt.target.checked ? TodoStatus.Complete : TodoStatus.Active;
-            listCurrentTodo[index].isCompleted = evt.target.checked;
-            updateTodoList(listCurrentTodo);
-        }
-    }
-
-    const onUpdateItem = (evt: React.KeyboardEvent<HTMLInputElement>, todoId: string) => {
-        const index = listCurrentTodo.findIndex(item => {return item.id == todoId});
-        const newTitle = (evt.target as HTMLInputElement).value.trim();
-        if(evt.key === 'Enter' && index > -1 && newTitle) {
-            // update new title for todo item after user press on enter button
-            listCurrentTodo[index].title = newTitle;
-            updateTodoList(listCurrentTodo);
-            setEditedTodoId("");
-        }
-    }
-
-    const onDeleteItem = (todoId: string) => {
-        let index = listCurrentTodo.findIndex(item => {return item.id == todoId});
-        if(index > -1) {
-            // remove todo item from list
-            listCurrentTodo.splice(index, 1);
-            updateTodoList(listCurrentTodo);
-        }
-    }
+    const { 
+        getListDisplayTodo,
+        clearAllCompleted,
+        completeAllTodo,
+        addTodoItem,
+        onCompleteItem,
+        onUpdateItem,
+        onDeleteItem,
+        displayType,
+        setDisplayType,
+        listCurrentTodo
+    } = useTodoService([]);
 
     const renderTodoItems = () => {
         return (

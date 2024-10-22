@@ -23,6 +23,8 @@ $color-text-danger: #c18585;
     button {
         padding: 4px 8px;
         border-radius: 8px;
+        border-width: 0;
+        cursor: pointer;
         &:hover {
             border-color: $color-border-active !important;
         }
@@ -51,6 +53,7 @@ $color-text-danger: #c18585;
             display: block;
             width: 40px;
             height: 100%;
+            cursor: pointer;
 
             &::before {
                 color: $color-text-todo;
@@ -93,6 +96,7 @@ $color-text-danger: #c18585;
             &:focus {
                 color: $color-text-danger;
                 border-color: $color-text-danger !important;
+                border-width: 1px;
             }
 
             &:focus-visible {
@@ -118,7 +122,6 @@ $color-text-danger: #c18585;
             align-items: center;
             border-bottom: 1px solid #ededed;
             padding: 8px 0;
-            cursor: pointer;
 
             &:hover {
                 & .todo__item--delete-todo {
@@ -149,6 +152,7 @@ $color-text-danger: #c18585;
             height: 40px;
             transition: color .4s;
             word-break: break-all;
+            cursor: pointer;
         }
 
         .todo__item--checkbox:checked + .todo__item--label {
@@ -162,6 +166,7 @@ $color-text-danger: #c18585;
             text-overflow: ellipsis;
             margin: 0 0 0 16px;
             text-align: left;
+            cursor: pointer;
         }
     }
 

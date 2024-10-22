@@ -15,7 +15,7 @@ export interface TodoItemProps {
     onUpdateItem: (evt: React.KeyboardEvent<HTMLInputElement>, itemId: string) => void;
 }
 
-const TodoItem = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }: TodoItemProps) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }) => {
     console.log('[===========CHILDREN===========] TodoItem re-render');
     const inputRef = useRef(null);
 
