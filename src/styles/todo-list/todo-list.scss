@@ -47,9 +47,6 @@ html{
     
     &__item {
         list-style: none;
-    
-        &.edit-mode {
-        }
 
         &--edit {
             width: 100%;
@@ -63,6 +60,8 @@ html{
             display: flex;
             align-items: center;
             border-bottom: 1px solid #ededed;
+            padding: 8px 0;
+            cursor: pointer;
         }
     
         &--checkbox {

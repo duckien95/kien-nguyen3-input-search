@@ -3,13 +3,13 @@ import TodoItem from "./todo-item";
 import { TodoStatus } from "../../utils/variables/todo-status";
 import { TodoData } from "./inteface/interface-todo-item";
 import { useTodoListStore } from "../../context/todo-list/todo-list-store";
-import { TodoListStateProps } from "../../context/todo-list/todo-list-store";
 
 export interface TodoListProps {
     todoList: Array<TodoData>;
+    placeholder: string;
 }
 
-const TodoList = ({ todoList }: TodoListProps) => {
+const TodoList = ({ todoList, placeholder }: TodoListProps) => {
     console.log('TodoList re-render')
 
     const [displayType, setDisplayType] = useState(TodoStatus.All);
@@ -27,7 +27,7 @@ const TodoList = ({ todoList }: TodoListProps) => {
     };
 
     const updateTodoList = (listTodo: TodoData[]) => {
-        setListCurrentTodo(prevListTodo => [...JSON.parse(JSON.stringify(listTodo))]);
+        setListCurrentTodo([...JSON.parse(JSON.stringify(listTodo))]);
     }
 
     const clearAllCompleted = () => {
@@ -115,7 +115,7 @@ const TodoList = ({ todoList }: TodoListProps) => {
         <div className="todo">
             <div className="todo__header">
                 <input type="text" 
-                    placeholder="What needs to be done ?"
+                    placeholder={placeholder}
                     className="todo__header--input-title" 
                     onKeyDown={addTodoItem}
                 ></input>
