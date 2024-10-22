@@ -34,8 +34,7 @@ $color-text-danger: #c18585;
         position: relative;
         &--input-title {
             width: 100%;
-            padding: 16px;
-            padding-left: 48px;
+            padding: 16px 16px 16px 60px;
             font-size: 20px;
         }
 
@@ -50,19 +49,20 @@ $color-text-danger: #c18585;
         }
 
         &--complete-all {
-            display: block;
-            width: 40px;
+            display: flex;
+            width: 60px;
             height: 100%;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
 
             &::before {
                 color: $color-text-todo;
                 content: "❯";
                 display: inline-block;
-                font-size: 22px;
+                font-size: 24px;
                 -webkit-transform: rotate(90deg);
                 transform: rotate(90deg);
-                padding-left: 27px;
             }
         }
     }
