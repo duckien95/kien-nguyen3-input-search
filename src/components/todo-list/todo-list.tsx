@@ -6,10 +6,11 @@ import { useTodoListStore } from "../../context/todo-list/todo-list-store";
 
 export interface TodoListProps {
     todoList: Array<TodoData>;
-    placeholder: string;
+    placeholder?: string;
+    pageTitle?: string;
 }
 
-const TodoList = ({ todoList, placeholder }: TodoListProps) => {
+const TodoList = ({ todoList, placeholder, pageTitle = "Todos" }: TodoListProps) => {
     console.log('TodoList re-render')
 
     const [displayType, setDisplayType] = useState(TodoStatus.All);
@@ -113,31 +114,38 @@ const TodoList = ({ todoList, placeholder }: TodoListProps) => {
     // Your code start here
     return (
         <div className="todo">
+            <h1>{pageTitle}</h1>
             <div className="todo__header">
                 <input type="text" 
                     placeholder={placeholder}
                     className="todo__header--input-title" 
                     onKeyDown={addTodoItem}
                 ></input>
-                <label className="todo__header--complete-action">
-                    <input className="todo__header--complete-checkbox d-none" type="checkbox" onChange={completeAllTodo}></input>
-                    <div className="todo__header--complete-text">Complete</div>
-                </label>
+                {
+                    !!listCurrentTodo.length &&
+                    <div className="todo__header--complete-action">
+                        <input id="btn-complete-all-todo" className="todo__header--complete-checkbox d-none" type="checkbox" onChange={completeAllTodo}></input>
+                        <label htmlFor="btn-complete-all-todo" className="todo__header--complete-all"></label>
+                    </div>
+                }
             </div>
             <div className="todo__body">
                 <ul className="todo__list">
                     {listCurrentTodo && renderTodoItems()}
                 </ul>
             </div>
-            <div className="todo__footer">
-                <div className="">{listCurrentTodo && renderFooter()}</div>
-                <div className="todo__filter">
-                    <button className={`todo__filter--item ${displayType == TodoStatus.All ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.All)}>All</button>
-                    <button className={`todo__filter--item ${displayType == TodoStatus.Active ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.Active)}>Active</button>
-                    <button className={`todo__filter--item ${displayType == TodoStatus.Complete ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.Complete)}>Complete</button>
+            {
+                !!listCurrentTodo.length && 
+                <div className="todo__footer">
+                    <div className="">{listCurrentTodo && renderFooter()}</div>
+                    <div className="todo__filter">
+                        <button className={`todo__filter--item ${displayType == TodoStatus.All ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.All)}>All</button>
+                        <button className={`todo__filter--item ${displayType == TodoStatus.Active ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.Active)}>Active</button>
+                        <button className={`todo__filter--item ${displayType == TodoStatus.Complete ? 'active' : ''}`} onClick={() => setDisplayType(TodoStatus.Complete)}>Complete</button>
+                    </div>
+                    <button className="" onClick={clearAllCompleted}>Clear Completed</button>
                 </div>
-                <button className="" onClick={clearAllCompleted}>Clear Completed</button>
-            </div>
+            }
         </div>
     )
     // Your code end here

@@ -48,14 +48,16 @@ const TodoItem = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }: Todo
                 onKeyDown={(evt) => onUpdateItem(evt, todoData.id)} 
                 onBlur={onBlurInput}
             ></input>
-            <div className={isEditingMode ? "d-none" : "todo__item--infor"}>
-                <input className="todo__item--checkbox" 
+            <div className={`${isEditingMode ? "d-none" : "todo__item--infor"} ${todoData.isCompleted ? "todo__item--infor-completed" : ""} `}>
+                <input className="todo__item--checkbox d-none"
+                    id={`checkbox-${todoData.id}`}
                     type="checkbox" 
                     checked={todoData.isCompleted} 
                     onChange={(evt) => onCompleteItem && onCompleteItem(evt, todoData.id)}
                 ></input>
+                <label htmlFor={`checkbox-${todoData.id}`} className="todo__item--label"></label>
                 <p className="todo__item--title" onDoubleClick={onDoubleClick}>{todoData.title}</p>
-                <button className="todo__item--button" onClick={() => onDeleteItem(todoData.id)}>Clear</button>
+                <button className="todo__item--delete-todo d-none" onClick={() => onDeleteItem(todoData.id)}></button>
             </div>
         </li>
 
