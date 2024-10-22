@@ -1,14 +1,13 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import TodoItem from "./todo-item";
 import { TodoStatus } from "../../utils/variables/todo-status";
 import { TodoData } from "./inteface/interface-todo-item";
 import { useTodoListStore } from "../../context/todo-list/todo-list-store";
+import { TodoListStateProps } from "../../context/todo-list/todo-list-store";
 
 export interface TodoListProps {
     todoList: Array<TodoData>;
 }
-
-
 
 const TodoList = ({ todoList }: TodoListProps) => {
     console.log('TodoList re-render')
@@ -16,7 +15,7 @@ const TodoList = ({ todoList }: TodoListProps) => {
     const [displayType, setDisplayType] = useState(TodoStatus.All);
     const [listCurrentTodo, setListCurrentTodo] = useState<TodoData[]>(todoList);
     // get state from todo list store
-    const setEditedTodoId = useTodoListStore((state) => state.setEditedTodoId);
+    const setEditedTodoId = useTodoListStore((state: any) => state.setEditedTodoId);
 
     const getListDisplayTodo = () => {           
         return listCurrentTodo.filter(item => {
@@ -37,10 +36,10 @@ const TodoList = ({ todoList }: TodoListProps) => {
         }));
     }
 
-    const completeAllTodo = (evt : React.ChangeEvent<HTMLInputElement>) => {
+    const completeAllTodo = () => {
         const listCompleted = listCurrentTodo.filter(item => item.isCompleted);
-        const flagComplete = !(listCompleted.length == listCurrentTodo.length);
-        listCurrentTodo.map(item => item.isCompleted = flagComplete);
+        const flagComplete = listCompleted.length != listCurrentTodo.length;
+        listCurrentTodo.forEach(item => item.isCompleted = flagComplete);
         updateTodoList(listCurrentTodo);
     }
 
@@ -65,7 +64,6 @@ const TodoList = ({ todoList }: TodoListProps) => {
         let index = listCurrentTodo.findIndex(item => {return item.id == todoId});
         if(index > -1) {
             // update new status for todo item
-            const item =listCurrentTodo[index];
             listCurrentTodo[index].type = evt.target.checked ? TodoStatus.Complete : TodoStatus.Active;
             listCurrentTodo[index].isCompleted = evt.target.checked;
             updateTodoList(listCurrentTodo);

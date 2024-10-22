@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 
 export interface TodoListStateProps {
     editedTodoId: string;

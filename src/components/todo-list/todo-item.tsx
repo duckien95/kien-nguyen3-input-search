@@ -1,6 +1,5 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import "../../styles/todo-list/todo-list.scss";
-import { TodoStatus } from "../../utils/variables/todo-status";
 import { TodoData } from "./inteface/interface-todo-item";
 import { useTodoListStore } from "../../context/todo-list/todo-list-store";
 
@@ -17,17 +16,20 @@ export interface TodoItemProps {
 }
 
 const TodoItem = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }: TodoItemProps) => {
-    console.log('[Chidren] TodoItem re-render');
+    console.log('[===========CHILDREN===========] TodoItem re-render');
     const inputRef = useRef(null);
 
     // get state from todo list store
-    const editedTodoId = useTodoListStore((state) => state.editedTodoId);
-    const setEditedTodoId = useTodoListStore((state) => state.setEditedTodoId);
+    const editedTodoId = useTodoListStore((state: any) => state.editedTodoId);
+    const setEditedTodoId = useTodoListStore((state: any) => state.setEditedTodoId);
 
     const onDoubleClick = () => {
-        setEditedTodoId(todoData.id); 
-        inputRef.current && inputRef.current.click();
+        setEditedTodoId(todoData.id);
     }
+
+    useEffect(() => {
+        inputRef.current && (inputRef.current as HTMLInputElement).focus();
+    });
 
     const onBlurInput = (evt: React.FocusEvent<HTMLInputElement>) => {
         evt.target.value = todoData.title;
@@ -46,15 +48,15 @@ const TodoItem = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }: Todo
                 onKeyDown={(evt) => onUpdateItem(evt, todoData.id)} 
                 onBlur={onBlurInput}
             ></input>
-            <div className={isEditingMode ? "d-none" : "todo__item--infor"} onDoubleClick={onDoubleClick}>
+            <p className={isEditingMode ? "d-none" : "todo__item--infor"} onDoubleClick={onDoubleClick}>
                 <input className="todo__item--checkbox" 
                     type="checkbox" 
                     checked={todoData.isCompleted} 
-                    onChange={(evt) => onCompleteItem(evt, todoData.id)}
+                    onChange={(evt) => onCompleteItem && onCompleteItem(evt, todoData.id)}
                 ></input>
                 <div className="todo__item--title">{todoData.title}</div>
                 <button className="todo__item--button" onClick={() => onDeleteItem(todoData.id)}>Clear</button>
-            </div>
+            </p>
         </li>
 
     )
