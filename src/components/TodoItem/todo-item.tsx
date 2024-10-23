@@ -1,19 +1,7 @@
 import { useRef, useEffect } from "react";
 import "../../styles/todo-list/todo-list.scss";
-import { TodoData } from "./inteface/interface-todo-item";
-import { useTodoListStore } from "../../context/todo-list/todo-list-store";
-
-export interface TodoItemProps {
-    todoData: TodoData;
-    /** On click item handler */
-    onSelectItem?: (item: string) => void;
-    /** On complete todo handler */
-    onCompleteItem?: (evt: React.ChangeEvent<HTMLInputElement>, itemId: string) => void;
-    /** On delete todo handler */
-    onDeleteItem: (itemId: string) => void;
-    /** On delete todo handler */
-    onUpdateItem: (evt: React.KeyboardEvent<HTMLInputElement>, itemId: string) => void;
-}
+import { TodoItemProps } from "../../models/Todo/todo.interface";
+import { useTodoListStore } from "../../context/todo-list/todo-list.store";
 
 const TodoItem: React.FC<TodoItemProps> = ({ todoData, onCompleteItem, onDeleteItem, onUpdateItem }) => {
     console.log('[===========CHILDREN===========] TodoItem re-render');

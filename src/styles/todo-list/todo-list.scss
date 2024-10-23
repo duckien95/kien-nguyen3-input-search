@@ -23,7 +23,6 @@ $color-text-danger: #c18585;
     button {
         padding: 4px 8px;
         border-radius: 8px;
-        border-width: 0;
         cursor: pointer;
         &:hover {
             border-color: $color-border-active !important;
@@ -32,10 +31,10 @@ $color-text-danger: #c18585;
 
     &__header {
         position: relative;
+        display: flex;
         &--input-title {
             width: 100%;
-            padding: 16px;
-            padding-left: 48px;
+            padding: 16px 16px 16px 56px;
             font-size: 20px;
         }
 
@@ -50,9 +49,11 @@ $color-text-danger: #c18585;
         }
 
         &--complete-all {
-            display: block;
-            width: 40px;
-            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 56px;
             cursor: pointer;
 
             &::before {
@@ -62,7 +63,6 @@ $color-text-danger: #c18585;
                 font-size: 22px;
                 -webkit-transform: rotate(90deg);
                 transform: rotate(90deg);
-                padding-left: 27px;
             }
         }
     }
@@ -96,7 +96,6 @@ $color-text-danger: #c18585;
             &:focus {
                 color: $color-text-danger;
                 border-color: $color-text-danger !important;
-                border-width: 1px;
             }
 
             &:focus-visible {
@@ -112,8 +111,8 @@ $color-text-danger: #c18585;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 -webkit-transform: translate(-50%, -50%);
-                width: 20px;
-                height: 20px;
+                width: 32px;
+                height: 32px;
             }
         }
     

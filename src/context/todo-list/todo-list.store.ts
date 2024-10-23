@@ -1,10 +1,5 @@
 import { create } from 'zustand';
-
-export interface TodoListStateProps {
-    editedTodoId: string;
-    isCompletedAll: boolean;
-    listIdCompletedAll: string[];
-}
+import { TodoListStateProps } from '../../models/Todo/todo.interface';
 
 const initialState: TodoListStateProps = {
     editedTodoId: "",
