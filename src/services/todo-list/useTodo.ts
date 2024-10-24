@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { TodoStatus } from "../../utils/variables/todo-status";
-import { TodoData } from "../../components/todo-list/inteface/interface-todo-item";
+import { TodoData } from "../../models/Todo/todo.interface";
 import { useTodoListStore } from "../../context/todo-list/todo-list.store";
 
 export const useTodoService = () => {

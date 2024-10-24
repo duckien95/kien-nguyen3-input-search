@@ -1,3 +1,5 @@
+import { TodoStatus } from "../../utils/variables/todo-status";
+
 export interface TodoData {
     type: string;
     title: string;
@@ -26,7 +28,7 @@ export interface TodoInputProps {
 
 export interface TodoFilterProps {
     displayType: string;
-    setDisplayType: (type: string) => void;
+    setDisplayType: React.Dispatch<React.SetStateAction<TodoStatus>>;
     listCurrentTodo: Array<TodoData>;
     clearAllCompleted: () => void;
     getListDisplayTodo: () => void;
