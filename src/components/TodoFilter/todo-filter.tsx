@@ -1,10 +1,11 @@
 import { TodoStatus } from "../../utils/variables/todo-status";
+import { TodoFilterProps } from "../../models/Todo/todo.interface";
 
 const renderText = (listDisplayTodo: any) =>  {
     return `${listDisplayTodo.length} ${listDisplayTodo.length == 1 ? 'item' : 'items'} left!!!`;
 };
 
-const TodoFilter: React.FC<any> = ({displayType, setDisplayType, listCurrentTodo, clearAllCompleted, getListDisplayTodo}) => {
+const TodoFilter: React.FC<TodoFilterProps> = ({displayType, setDisplayType, listCurrentTodo, clearAllCompleted, getListDisplayTodo}) => {
 
     return (
         !!listCurrentTodo.length && 

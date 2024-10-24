@@ -1,4 +1,6 @@
-const TodoInput: React.FC<any> = ({placeholder, addTodoItem, listCurrentTodo, completeAllTodo}) => {
+import { TodoInputProps } from "../../models/Todo/todo.interface";
+
+const TodoInput: React.FC<TodoInputProps> = ({placeholder, addTodoItem, listCurrentTodo, completeAllTodo}) => {
     return (
         <div className="todo__header">
                 <input type="text" 

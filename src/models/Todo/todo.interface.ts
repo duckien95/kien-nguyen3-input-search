@@ -17,6 +17,21 @@ export interface TodoItemProps {
     onUpdateItem: (evt: React.KeyboardEvent<HTMLInputElement>, itemId: string) => void;
 }
 
+export interface TodoInputProps {
+    placeholder: string;
+    listCurrentTodo: Array<TodoData>;
+    addTodoItem: (evt: React.KeyboardEvent<HTMLInputElement>) => void;
+    completeAllTodo: () => void;
+}
+
+export interface TodoFilterProps {
+    displayType: string;
+    setDisplayType: (type: string) => void;
+    listCurrentTodo: Array<TodoData>;
+    clearAllCompleted: () => void;
+    getListDisplayTodo: () => void;
+}
+
 export interface TodoListProps {
     todoList: Array<TodoData>;
     placeholder?: string;
